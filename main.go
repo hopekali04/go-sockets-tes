@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"net/http"
 
 	//"github.com/gorilla/websocket"
 	"golang.org/x/net/websocket"
@@ -44,5 +45,9 @@ func (s *Server) handleWS(ws *websocket.Conn) {
 
 }
 func main() {
+	server := newServer()
+
+	http.Handle("/ws", websocket.Handler(server.handleWS))
+	http.ListenAndServe(":3000", nil)
 
 }
