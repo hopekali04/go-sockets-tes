@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebSocket Test</title>
+  </head>
+  <body>
+    <h1>WebSocket Test</h1>
+    <button id="send-button">Send Message</button>
+    <p id="text"></p>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        let socket = new WebSocket("ws://localhost:3000/ws");
+
+        socket.onmessage = (event) => {
+          document.getElementById("text").innerHTML = event.data;
+        };
+
+        socket.onopen = () => {
+          console.log("Connected to the WebSocket server");
+          document.getElementById("text").innerHTML = "connected";
+        };
+
+        socket.onerror = (event) => {
+          console.error("Error occurred while connecting to the WebSocket server", event);
+          document.getElementById("text").innerHTML = "error";
+        };
+
+        socket.onclose = () => {
+          console.log("Disconnected from the WebSocket server");
+          document.getElementById("text").innerHTML = "closed";
+        };
+
+        document.getElementById("send-button").addEventListener("click", () => {
+          socket.send("Hello, server!");
+        });
+      });
+    </script>
+  </body>
+</html>
